@@ -1,0 +1,12 @@
+openssl genrsa -des3 -out RCAkey.key 4096
+openssl req -key RCAkey.key -new -out RCA.csr
+openssl x509 -signkey RCAkey.key -in RCA.csr -req -days 365 -out RCA.crt
+openssl req -x509 -sha256 -days 1825 -newkey rsa:4096 -keyout rootCA.key -out rootCA.crt
+
+# openssl genrsa -aes256 -out ../CA/private/intermediate.key.pem 4096
+# openssl req -config ../CA/openssl.cnf -new -sha256 -key ../CA/private/intermediate.key.pem -out ../CA/csr/intermediate.csr.pem
+
+openssl ecparam -name prime256v1 -genkey -noout -out ica.key
+openssl req -new -sha256 -key ica.key -out ica.csr
+openssl ca -batch -config ca.cnf -extensions v3_intermediate_ca -days 365 -notext -md sha256 -in ica.csr -out ica.cert
+

@@ -1,0 +1,36 @@
+# openssl.cnf
+
+[ ca ]
+default_ca = my_ca
+
+[ my_ca ]
+# Use the same directory structure as the RCA
+dir = /path/to/ica
+new_certs_dir = $dir/newcerts
+certificate = $dir/certs/ica.crt
+private_key = $dir/private/ica.key
+serial = $dir/serial
+database = $dir/index
+crlnumber = $dir/crlnumber
+default_md = sha256
+default_crl_days = 30
+default_days = 365
+x509_extensions = my_ca_extensions
+copy_extensions = copy
+
+# The subject and issuer are the same for the ICA and the email signing certificates
+# Use a unique serial number for each email signing certificate
+unique_subject = no
+serial_number = 01
+
+# Extensions for the ICA certificate
+[ my_ca_extensions ]
+basicConstraints = CA:true, pathlen:0
+keyUsage = digitalSignature, keyCertSign
+
+# Extensions for email signing certificates
+[ email_signing_extensions ]
+basicConstraints = CA:false
+keyUsage = digitalSignature, keyEncipherment, dataEncipherment
+extendedKeyUsage = emailProtection
+subjectAltName = email:copy

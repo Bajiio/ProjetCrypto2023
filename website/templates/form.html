@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Demande de Certificat</title>
+    <style>
+      body {
+        font-family: Georgia, serif;
+        font-size: 16px;
+        line-height: 1.5;
+        margin: 0;
+        padding: 0;
+        background-color: #f2f2f2;
+      }
+      h1 {
+        font-size: 24px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      form {
+        width: 600px;
+        margin: 0 auto;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        padding: 20px;
+        box-shadow: 0 0 10px #ccc;
+      }
+      label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+      }
+      input[type="text"],
+      input[type="file"] {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+      }
+      input[type="submit"] {
+        background-color: #4CAF50;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      input[type="submit"]:hover {
+        background-color: #3e8e41;
+      }
+      .alert {
+            padding: 20px;
+            margin: 5px;
+            color: #970020;
+            background-color: #ffd5de;
+        }
+        .success {
+            padding: 20px;
+            margin: 5px;
+            color: #0a0;
+            background-color: #d5ffd5;
+        }
+        .cancel-button {
+        background-color: #970020;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .cancel-button:hover {
+        background-color: #6e0219;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Formulaire de demande de Certificats pour {{email}}</h1>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+      <label for="csr">Fichier CSR:</label>
+      <input type="file" id="csr" name="csr" accept="text/csr">
+      {% for message in get_flashed_messages() %}
+        {% if success == "True" %}
+          <div class="success">{{message}}</div>
+        {% else %}
+          <div class="alert">{{message}}</div>
+        {% endif %}
+        {% endfor %}
+      <input type="submit" value="Envoyer">
+      <button class="cancel-button" onclick="location.href='{{ url_for('connectEmail')}}';" type="button">Changer de mail</button>
+      <button class="cancel-button" style="float: right;" onclick="location.href='{{ url_for('check',revoke=True,email=session.get('email'))}}';" type="button">Révoquer mon Certificat</button>
+    </form>
+  </body>
+</html>

@@ -1,0 +1,6 @@
+openssl genrsa -des3 -out RCAkey.key 4096
+openssl req -key RCAkey.key -new -out RCA.csr
+openssl x509 -signkey RCAkey.key -in RCA.csr -req -days 365 -out RCA.crtopenssl genrsa -aes256 -out ../CA/private/intermediate.key.pem 4096
+
+openssl req -x509 -sha256 -days 1825 -newkey rsa:4096 -keyout rootCA.key -out rootCA.crt
+
