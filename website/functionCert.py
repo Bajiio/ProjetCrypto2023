@@ -3,7 +3,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
-
+import credential
 
 
 def upload_csr(csrFile, email):
@@ -22,7 +22,6 @@ def is_valid_email(email):
 def sendEmail(recipient_email,mode):
     # Adresse e-mail de l'expéditeur et mot de passe SMTP
     sender_email = "projetcrypto2023@gmail.com"
-    password = "bhoxgybwypaeldjx"
 
     # Vérification de l'adresse e-mail
     if not is_valid_email(recipient_email):
@@ -53,7 +52,7 @@ def sendEmail(recipient_email,mode):
         with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
             smtp.ehlo()
             smtp.starttls()
-            smtp.login(sender_email, password)
+            smtp.login(sender_email, credential.password)
             smtp.send_message(msg)
             smtp.quit()
     if mode ==0:
